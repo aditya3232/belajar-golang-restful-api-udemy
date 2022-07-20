@@ -4,6 +4,7 @@ import (
 	"adit/belajar-golang-restful-api-udemy/helper"
 	"adit/belajar-golang-restful-api-udemy/model/web"
 	"adit/belajar-golang-restful-api-udemy/service"
+	"fmt"
 	"net/http"
 	"strconv"
 
@@ -48,6 +49,8 @@ func (controller *CategoryControllerImpl) Update(writer http.ResponseWriter, req
 
 	categoryUpdateRequest.Id = id
 	
+	fmt.Println(categoryUpdateRequest)
+
 	// memberikan response
 	categoryResponse := controller.CategoryService.Update(request.Context(), categoryUpdateRequest)
 	webResponse := web.WebResponse{

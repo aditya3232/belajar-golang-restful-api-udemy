@@ -28,8 +28,13 @@ func (repository *CategoryRepositoryImpl) Save(ctx context.Context, tx *sql.Tx, 
 }
 
 func (repository *CategoryRepositoryImpl) Update(ctx context.Context, tx *sql.Tx, category domain.Category) domain.Category {
-	SQL := "update category set name = ? where id = ?"
-	_, err := tx.ExecContext(ctx, SQL, category.Id)
+	SQL := "update category set name = ? where id =  ?" 	
+	_, err := tx.ExecContext(ctx, SQL, category.Name, category.Id)
+	// if err != nil{
+	// 	helper.PanicIfError(err)
+	// 	category.Name = "error"
+	// 	return category
+	// }
 	helper.PanicIfError(err)
 
 	return category
@@ -45,6 +50,9 @@ func (repository *CategoryRepositoryImpl) FindById(ctx context.Context, tx *sql.
 	SQL := "select id, name from category where id = ?"
 	rows, err := tx.QueryContext(ctx, SQL, categoryId)
 	helper.PanicIfError(err)
+	
+	// close untuk query select
+	defer rows.Close()
 
 	category := domain.Category{}
 	if rows.Next() {
@@ -60,6 +68,9 @@ func (repository *CategoryRepositoryImpl) FindAll(ctx context.Context, tx *sql.T
 	SQL := "select id, name from category"
 	rows, err := tx.QueryContext(ctx, SQL)
 	helper.PanicIfError(err)
+
+	// close untuk query select
+	defer rows.Close()
 
 	var categories []domain.Category //ini slicenya
 	for rows.Next() {

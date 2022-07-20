@@ -3,6 +3,7 @@ package main
 import (
 	"adit/belajar-golang-restful-api-udemy/app"
 	"adit/belajar-golang-restful-api-udemy/controller"
+	"adit/belajar-golang-restful-api-udemy/exception"
 	"adit/belajar-golang-restful-api-udemy/helper"
 	"adit/belajar-golang-restful-api-udemy/repository"
 	"adit/belajar-golang-restful-api-udemy/service"
@@ -27,6 +28,9 @@ func main() {
 	router.POST("/api/categories/", categoryController.Create)
 	router.PUT("/api/categories/:categoryId", categoryController.Update)
 	router.DELETE("/api/categories/:categoryId", categoryController.Delete)
+
+	router.PanicHandler = exception.ErrorHandler
+
 
 	server := http.Server{
 		Addr: "localhost:3000",

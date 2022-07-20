@@ -1,6 +1,7 @@
 package service
 
 import (
+	"adit/belajar-golang-restful-api-udemy/exception"
 	"adit/belajar-golang-restful-api-udemy/helper"
 	"adit/belajar-golang-restful-api-udemy/model/domain"
 	"adit/belajar-golang-restful-api-udemy/model/web"
@@ -54,9 +55,13 @@ func (service *CategoryServiceImpl) Update(ctx context.Context, request web.Cate
 
 	// cek idnya ada apa tidak
 	category, err := service.CategoryRepository.FindById(ctx, tx, request.Id)
-	helper.PanicIfError(err)
+	// helper.PanicIfError(err)
+	if err != nil {
+		panic(exception.NewNotFoundError(err.Error()))
+	}
 
 	category.Name = request.Name
+	// category.Id = request.Id
 
 	category = service.CategoryRepository.Update(ctx, tx, category)
 
@@ -69,7 +74,10 @@ func (service *CategoryServiceImpl) Delete(ctx context.Context, categoryId int) 
 	defer helper.CommitOrRollback(tx) 
 
 	category, err := service.CategoryRepository.FindById(ctx, tx, categoryId)
-	helper.PanicIfError(err)
+	// helper.PanicIfError(err)
+	if err != nil {
+		panic(exception.NewNotFoundError(err.Error()))
+	}
 
 	service.CategoryRepository.Delete(ctx, tx, category)
 }
@@ -80,7 +88,10 @@ func (service *CategoryServiceImpl) FindById(ctx context.Context, categoryId int
 	defer helper.CommitOrRollback(tx) 
 
 	category, err := service.CategoryRepository.FindById(ctx, tx, categoryId)
-	helper.PanicIfError(err)
+	// helper.PanicIfError(err)
+	if err != nil {
+		panic(exception.NewNotFoundError(err.Error()))
+	}
 
 	return helper.ToCategoryResponse(category)
 }
