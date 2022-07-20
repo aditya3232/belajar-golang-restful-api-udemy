@@ -5,6 +5,7 @@ import (
 	"adit/belajar-golang-restful-api-udemy/controller"
 	"adit/belajar-golang-restful-api-udemy/exception"
 	"adit/belajar-golang-restful-api-udemy/helper"
+	"adit/belajar-golang-restful-api-udemy/middleware"
 	"adit/belajar-golang-restful-api-udemy/repository"
 	"adit/belajar-golang-restful-api-udemy/service"
 	"net/http"
@@ -34,7 +35,7 @@ func main() {
 
 	server := http.Server{
 		Addr: "localhost:3000",
-		Handler: router,
+		Handler: middleware.NewAuthMiddleware(router),
 	}
 
 	err := server.ListenAndServe()
